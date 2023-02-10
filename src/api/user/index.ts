@@ -16,11 +16,9 @@ export function getUserInfo(): AxiosPromise<UserInfo> {
  * 获取用户分页列表
  * @param queryParams
  */
-export function listUserPages(
-  queryParams: UserQuery
-): AxiosPromise<UserPageResult> {
+export function listUserPages(queryParams: UserQuery): AxiosPromise<UserPageResult> {
   return request({
-    url: '/api/v1/users/pages',
+    url: '/users/pages',
     method: 'get',
     params: queryParams
   });
@@ -32,7 +30,7 @@ export function listUserPages(
  */
 export function getUserForm(userId: number): AxiosPromise<UserForm> {
   return request({
-    url: '/api/v1/users/' + userId + '/form',
+    url: '/users/' + userId + '/form',
     method: 'get'
   });
 }
@@ -43,7 +41,7 @@ export function getUserForm(userId: number): AxiosPromise<UserForm> {
  */
 export function addUser(data: any) {
   return request({
-    url: '/api/v1/users',
+    url: '/users',
     method: 'post',
     data: data
   });
@@ -56,7 +54,7 @@ export function addUser(data: any) {
  */
 export function updateUser(id: number, data: UserForm) {
   return request({
-    url: '/api/v1/users/' + id,
+    url: '/users/' + id,
     method: 'put',
     data: data
   });
@@ -69,7 +67,7 @@ export function updateUser(id: number, data: UserForm) {
  */
 export function updateUserStatus(id: number, status: number) {
   return request({
-    url: '/api/v1/users/' + id + '/status',
+    url: '/users/' + id + '/status',
     method: 'patch',
     params: { status: status }
   });
@@ -82,7 +80,7 @@ export function updateUserStatus(id: number, status: number) {
  */
 export function updateUserPassword(id: number, password: string) {
   return request({
-    url: '/api/v1/users/' + id + '/password',
+    url: '/users/' + id + '/password',
     method: 'patch',
     params: { password: password }
   });
@@ -94,7 +92,7 @@ export function updateUserPassword(id: number, password: string) {
  */
 export function deleteUsers(ids: string) {
   return request({
-    url: '/api/v1/users/' + ids,
+    url: '/users/' + ids,
     method: 'delete'
   });
 }

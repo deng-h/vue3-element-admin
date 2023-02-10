@@ -8,7 +8,7 @@
         <el-dropdown-item
           v-for="item of sizeOptions"
           :key="item.value"
-          :disabled="(size || 'default') == item.value"
+          :disabled="(size || 'default') === item.value"
           :command="item.value"
         >
           {{ item.label }}

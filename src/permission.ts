@@ -30,13 +30,10 @@ router.beforeEach(async (to, from, next) => {
         try {
           await user.getUserInfo();
           const roles = user.roles;
-          
-          const accessRoutes: any = await permission.generateRoutes(roles);
+          const accessRoutes: any = await permission.generateRoutes(roles);  // 根据角色获取对应的路由信息
           accessRoutes.forEach((route: any) => {
             router.addRoute(route);
           });
-          console.log("router=", router);
-          
           next({ ...to, replace: true });
         } catch (error) {
           await user.resetToken();  // 移除 token 并跳转登录页

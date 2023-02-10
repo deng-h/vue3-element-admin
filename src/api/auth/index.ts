@@ -4,7 +4,7 @@ import { LoginForm } from './types';
 
 export function loginApi(data: LoginForm): AxiosPromise<string> {
   return request({
-    url: '/login',
+    url: '/auth/login',
     method: 'post',
     params: data,
     headers: {
@@ -15,7 +15,7 @@ export function loginApi(data: LoginForm): AxiosPromise<string> {
 
 export function logoutApi() {
   return request({
-    url: '/api/v1/auth/logout',
+    url: '/auth/logout',
     method: 'delete'
   });
 }

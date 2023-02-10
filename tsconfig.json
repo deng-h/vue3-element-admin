@@ -1,17 +1,17 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "esnext",  // 设置ts代码编译的目标版本
     "useDefineForClassFields": true,
-    "module": "esnext",
+    "module": "esnext",  // 设置编译后代码使用的模块化系统
     "moduleResolution": "node",
-    "strict": true,
+    "strict": true,  // 启用所有的严格检查，总开关
     "jsx": "preserve",
-    "sourceMap": true,
+    "sourceMap": true,  // 是否生成sourceMap
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "lib": ["esnext", "dom"],
+    "lib": ["esnext", "dom"],  // 指定代码运行时所包含的库（宿主环境）
     "baseUrl": "./", // 解析非相对模块的基地址，默认是当前目录
-    "allowJs": true,
+    "allowJs": true,  // 是否对js文件编译
     "paths": {
       "@/*": ["src/*"]
     },
@@ -24,6 +24,6 @@
       "./types"
     ] /* 指定多个文件夹，这些文件夹的作用类似于 './node_modules/@types'. */
   },
-  "include": ["src/**/*.ts", "src/**/*.vue", "types/**/*.d.ts"],
-  "exclude": ["node_modules", "dist", "**/*.js"]
+  "include": ["src/**/*.ts", "src/**/*.vue", "types/**/*.d.ts"],  // 定义希望被编译文件所在的目录
+  "exclude": ["node_modules", "dist", "**/*.js"]  // 定义需要排除在外的目录
 }

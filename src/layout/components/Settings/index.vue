@@ -60,7 +60,7 @@ const { setting } = useStore();
 const state = reactive({
   fixedHeader: setting.fixedHeader,
   tagsView: setting.tagsView,
-  sidebarLogo: setting.sidebarLogo
+  sidebarLogo: setting.showSidebarLogo
 });
 
 const { fixedHeader, tagsView, sidebarLogo } = toRefs(state);

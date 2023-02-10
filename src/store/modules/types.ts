@@ -6,7 +6,6 @@ export interface AppState {
     opened: boolean;
     withoutAnimation: boolean;
   };
-  language: string;
   size: string;
 }
 
@@ -20,7 +19,7 @@ export interface SettingState {
   tagsView: boolean;
   fixedHeader: boolean;
   showSettings: boolean;
-  sidebarLogo: boolean;
+  showSidebarLogo: boolean;
 }
 
 export interface UserState {

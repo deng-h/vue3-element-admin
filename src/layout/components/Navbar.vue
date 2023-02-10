@@ -17,32 +17,29 @@
         <el-tooltip content="布局大小" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
-        <lang-select class="right-menu-item hover-effect" />
       </template>
 
-      <el-dropdown
-        class="avatar-container right-menu-item hover-effect"
-        trigger="click"
-      >
+      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar" />
+          <!-- <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar" /> -->
+          <img src="@/assets/logo.png" class="user-avatar" />
           <CaretBottom style="width: 0.6em; height: 0.6em; margin-left: 5px" />
         </div>
 
         <template #dropdown>
           <el-dropdown-menu>
             <router-link to="/">
-              <el-dropdown-item>{{ $t('navbar.dashboard') }}</el-dropdown-item>
+              <el-dropdown-item>首页</el-dropdown-item>
             </router-link>
-            <a target="_blank" href="https://github.com/hxrui">
+            <!-- <a target="_blank" href="https://github.com/hxrui">
               <el-dropdown-item>Github</el-dropdown-item>
-            </a>
-            <a target="_blank" href="https://gitee.com/haoxr">
+            </a> -->
+            <!-- <a target="_blank" href="https://gitee.com/haoxr">
               <el-dropdown-item>{{ $t('navbar.gitee') }}</el-dropdown-item>
-            </a>
-            <a target="_blank" href="https://www.cnblogs.com/haoxianrui/">
+            </a> -->
+            <!-- <a target="_blank" href="https://www.cnblogs.com/haoxianrui/">
               <el-dropdown-item>{{ $t('navbar.document') }}</el-dropdown-item>
-            </a>
+            </a> -->
             <el-dropdown-item divided @click="logout">
               {{ $t('navbar.logout') }}
             </el-dropdown-item>
@@ -64,7 +61,6 @@ import Breadcrumb from '@/components/Breadcrumb/index.vue';
 import Hamburger from '@/components/Hamburger/index.vue';
 import Screenfull from '@/components/Screenfull/index.vue';
 import SizeSelect from '@/components/SizeSelect/index.vue';
-import LangSelect from '@/components/LangSelect/index.vue';
 
 // 图标依赖
 import { CaretBottom } from '@element-plus/icons-vue';
@@ -92,6 +88,7 @@ function logout() {
       .logout()
       .then(() => {
         tagsView.delAllViews();
+        tagsView.delAllCachedViews(); // 角色切换时 有时会看到不属于该角色的菜单信息 所以缓存也要清除
       })
       .then(() => {
         router.push(`/login?redirect=${route.fullPath}`);

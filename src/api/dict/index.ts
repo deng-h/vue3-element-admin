@@ -14,9 +14,7 @@ import {
  *
  * @param queryParams
  */
-export function listDictTypePages(
-  queryParams: DictQuery
-): AxiosPromise<DictPageResult> {
+export function listDictTypePages(queryParams: DictQuery): AxiosPromise<DictPageResult> {
   return request({
     url: '/api/v1/dict/types/pages',
     method: 'get',
@@ -78,9 +76,7 @@ export function deleteDictTypes(ids: string) {
  *
  * @param typeCode 字典类型编码
  */
-export function listDictItemsByTypeCode(
-  typeCode: string
-): AxiosPromise<OptionType[]> {
+export function listDictItemsByTypeCode(typeCode: string): AxiosPromise<OptionType[]> {
   return request({
     url: '/api/v1/dict/types/' + typeCode + '/items',
     method: 'get'

@@ -1,7 +1,9 @@
 <template>
   <section class="app-main">
     <router-view v-slot="{ Component, route }">
+<!--      transition 定义了页面之间切换动画-->
       <transition name="router-fade" mode="out-in">
+<!--        keep-alive主要是为了缓存<router-view>的，配合页面的 tabs-view标签导航使用-->
         <keep-alive :include="cachedViews">
           <component :is="Component" :key="route.fullPath" />
         </keep-alive>

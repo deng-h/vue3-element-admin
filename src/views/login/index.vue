@@ -54,7 +54,7 @@ const passwordRef = ref(ElInput);
 const state = reactive({
   redirect: '',
   loginForm: {
-    username: 'admin2',
+    username: 'admin',
     password: '123456'
   } as LoginForm,
   loginRules: {
@@ -63,9 +63,15 @@ const state = reactive({
   },
   loading: false,
   passwordType: 'password',
-  otherQuery: {},
-  showDialog: false
+  otherQuery: {}
 });
+
+const {
+  loginForm,
+  loginRules,
+  loading,
+  passwordType,
+} = toRefs(state);
 
 function validatePassword(rule: any, value: any, callback: any) {
   if (value.length < 1) {
@@ -75,12 +81,6 @@ function validatePassword(rule: any, value: any, callback: any) {
   }
 }
 
-const {
-  loginForm,
-  loginRules,
-  loading,
-  passwordType,
-} = toRefs(state);
 
 function showPwd() {
   if (passwordType.value === 'password') {

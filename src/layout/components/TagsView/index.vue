@@ -1,10 +1,6 @@
 <template>
   <div class="tags-view__container">
-    <scroll-pane
-      ref="scrollPaneRef"
-      class="tags-view__wrapper"
-      @scroll="handleScroll"
-    >
+    <scroll-pane ref="scrollPaneRef" class="tags-view__wrapper" @scroll="handleScroll">
       <router-link
         v-for="tag in visitedViews"
         :key="tag.path"
@@ -16,20 +12,12 @@
         @contextmenu.prevent="openMenu(tag, $event)"
       >
         {{ generateTitle(tag.meta.title) }}
-        <span
-          v-if="!isAffix(tag)"
-          class="icon-close"
-          @click.prevent.stop="closeSelectedTag(tag)"
-        >
+        <span v-if="!isAffix(tag)" class="icon-close" @click.prevent.stop="closeSelectedTag(tag)">
           <svg-icon icon-class="close" />
         </span>
       </router-link>
     </scroll-pane>
-    <ul
-      v-show="visible"
-      :style="{ left: left + 'px', top: top + 'px' }"
-      class="tags-view__menu"
-    >
+    <ul v-show="visible" :style="{ left: left + 'px', top: top + 'px' }" class="tags-view__menu">
       <li @click="refreshSelectedTag(selectedTag)">
         <svg-icon icon-class="refresh" />
         刷新

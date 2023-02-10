@@ -8,7 +8,7 @@ import { DeptForm, DeptQuery, Dept } from './types';
  */
 export function listDepartments(queryParams?: DeptQuery): AxiosPromise<Dept[]> {
   return request({
-    url: '/api/v1/dept',
+    url: '/dept',
     method: 'get',
     params: queryParams
   });
@@ -19,7 +19,7 @@ export function listDepartments(queryParams?: DeptQuery): AxiosPromise<Dept[]> {
  */
 export function listDeptOptions(): AxiosPromise<OptionType[]> {
   return request({
-    url: '/api/v1/dept/options',
+    url: '/dept/options',
     method: 'get'
   });
 }
@@ -31,7 +31,7 @@ export function listDeptOptions(): AxiosPromise<OptionType[]> {
  */
 export function getDeptForm(id: string): AxiosPromise<DeptForm> {
   return request({
-    url: '/api/v1/dept/' + id + '/form',
+    url: '/dept/' + id + '/form',
     method: 'get'
   });
 }
@@ -43,7 +43,7 @@ export function getDeptForm(id: string): AxiosPromise<DeptForm> {
  */
 export function addDept(data: DeptForm) {
   return request({
-    url: '/api/v1/dept',
+    url: '/dept',
     method: 'post',
     data: data
   });
@@ -57,7 +57,7 @@ export function addDept(data: DeptForm) {
  */
 export function updateDept(id: string, data: DeptForm) {
   return request({
-    url: '/api/v1/dept/' + id,
+    url: '/dept/' + id,
     method: 'put',
     data: data
   });
@@ -70,7 +70,7 @@ export function updateDept(id: string, data: DeptForm) {
  */
 export function deleteDept(ids: string) {
   return request({
-    url: '/api/v1/dept/' + ids,
+    url: '/dept/' + ids,
     method: 'delete'
   });
 }

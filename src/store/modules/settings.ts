@@ -3,23 +3,20 @@ import { SettingState } from './types';
 import defaultSettings from '../../settings';
 import { localStorage } from '@/utils/storage';
 
-const { showSettings, tagsView, fixedHeader, sidebarLogo } = defaultSettings;
+const { showSettings, tagsView, fixedHeader, showSidebarLogo } = defaultSettings;
 const el = document.documentElement;
 
 export const useSettingStore = defineStore({
   id: 'setting',
+
   state: (): SettingState => ({
-    theme:
-      localStorage.get('theme') ||
-      getComputedStyle(el).getPropertyValue(`--el-color-primary`),
+    theme: localStorage.get('theme') || getComputedStyle(el).getPropertyValue(`--el-color-primary`),
     showSettings: showSettings,
-    tagsView:
-      localStorage.get('tagsView') != null
-        ? localStorage.get('tagsView')
-        : tagsView,
+    tagsView: localStorage.get('tagsView') != null ? localStorage.get('tagsView') : tagsView,
     fixedHeader: fixedHeader,
-    sidebarLogo: sidebarLogo,
+    showSidebarLogo: showSidebarLogo,
   }),
+
   actions: {
     async changeSetting(payload: { key: string; value: any }) {
       const { key, value } = payload;
@@ -37,8 +34,8 @@ export const useSettingStore = defineStore({
           this.tagsView = value;
           localStorage.set('tagsView', value);
           break;
-        case 'sidebarLogo':
-          this.sidebarLogo = value;
+        case 'showSidebarLogo':
+          this.showSidebarLogo = value;
           break;
         default:
           break;

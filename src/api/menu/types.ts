@@ -12,7 +12,7 @@ export interface MenuQuery {
 export interface Menu {
   id?: number;
   parentId: number;
-  type?: string | 'CATEGORY' | 'MENU' | 'EXTLINK';
+  type?: number;
   createTime: string;
   updateTime: string;
   name: string;
@@ -62,9 +62,9 @@ export interface MenuForm {
   redirect?: string;
 
   /**
-   * 菜单类型
+   * 菜单类型  菜单类型(1:菜单；2:目录；3:外链；4:按钮)
    */
-  type: string;
+  type: number;
 
   /**
    * 权限标识

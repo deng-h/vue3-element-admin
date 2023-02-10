@@ -19,7 +19,7 @@ const useUserStore = defineStore({
     perms: []
   }),
 
-  //操作
+  // 操作
   actions: {
     async RESET_STATE() {this.$reset();},
 
@@ -33,7 +33,6 @@ const useUserStore = defineStore({
           password: password
         })
           .then(response => {
-            console.log('登录成功 返回的Token:', response.data);
             const accessToken = response.data;
             localStorage.set('token', accessToken);
             // 这里只是先存了用户的token信息 roles、perms等信息在permission.ts中调用getUserInfo()API获取
@@ -49,13 +48,11 @@ const useUserStore = defineStore({
      // 获取用户信息（昵称、头像、角色集合、权限集合）
     getUserInfo() {
       return new Promise((resolve, reject) => {
-        getUserInfo()
-          .then(({ data }) => {
+        getUserInfo().then(({ data }) => {
             if (!data) {
               console.error('Verification failed, please Login again.');
               return reject('Verification failed, please Login again.');
             }
-            console.log('getUserInfo()', data)
             const { nickname, avatar, roles, perms } = data;
             if (!roles || roles.length <= 0) {
               console.error('getUserInfo: roles must be a non-null array!')
@@ -72,7 +69,6 @@ const useUserStore = defineStore({
           });
       });
     },
-
 
      //注销
     logout() {

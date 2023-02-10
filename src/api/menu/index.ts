@@ -8,7 +8,7 @@ import { MenuQuery, Menu, Resource, MenuForm } from './types';
 export function listRoutes() {
   return request({
     url: '/menus/routes',
-    method: 'get'
+    method: 'get',
   });
 }
 
@@ -18,7 +18,7 @@ export function listRoutes() {
  */
 export function listMenus(queryParams: MenuQuery): AxiosPromise<Menu[]> {
   return request({
-    url: '/api/v1/menus',
+    url: '/menus',
     method: 'get',
     params: queryParams
   });
@@ -29,7 +29,7 @@ export function listMenus(queryParams: MenuQuery): AxiosPromise<Menu[]> {
  */
 export function listMenuOptions(): AxiosPromise<OptionType[]> {
   return request({
-    url: '/api/v1/menus/options',
+    url: '/menus/options',
     method: 'get'
   });
 }
@@ -39,7 +39,7 @@ export function listMenuOptions(): AxiosPromise<OptionType[]> {
  */
 export function listResources(): AxiosPromise<Resource[]> {
   return request({
-    url: '/api/v1/menus/resources',
+    url: '/menus/resources',
     method: 'get'
   });
 }
@@ -50,7 +50,7 @@ export function listResources(): AxiosPromise<Resource[]> {
  */
 export function getMenuDetail(id: string): AxiosPromise<MenuForm> {
   return request({
-    url: '/api/v1/menus/' + id,
+    url: '/menus/' + id,
     method: 'get'
   });
 }
@@ -62,7 +62,7 @@ export function getMenuDetail(id: string): AxiosPromise<MenuForm> {
  */
 export function addMenu(data: MenuForm) {
   return request({
-    url: '/api/v1/menus',
+    url: '/menus',
     method: 'post',
     data: data
   });
@@ -76,7 +76,7 @@ export function addMenu(data: MenuForm) {
  */
 export function updateMenu(id: string, data: MenuForm) {
   return request({
-    url: '/api/v1/menus/' + id,
+    url: '/menus/' + id,
     method: 'put',
     data: data
   });
@@ -89,7 +89,7 @@ export function updateMenu(id: string, data: MenuForm) {
  */
 export function deleteMenus(ids: string) {
   return request({
-    url: '/api/v1/menus/' + ids,
+    url: '/menus/' + ids,
     method: 'delete'
   });
 }

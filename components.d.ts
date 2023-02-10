@@ -36,7 +36,6 @@ declare module '@vue/runtime-core' {
     GithubCorner: typeof import('./src/components/GithubCorner/index.vue')['default']
     Hamburger: typeof import('./src/components/Hamburger/index.vue')['default']
     IconSelect: typeof import('./src/components/IconSelect/index.vue')['default']
-    LangSelect: typeof import('./src/components/LangSelect/index.vue')['default']
     MultiUpload: typeof import('./src/components/Upload/MultiUpload.vue')['default']
     Pagination: typeof import('./src/components/Pagination/index.vue')['default']
     RightPanel: typeof import('./src/components/RightPanel/index.vue')['default']

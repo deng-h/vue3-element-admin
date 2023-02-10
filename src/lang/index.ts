@@ -7,12 +7,8 @@ import enLocale from './en';
 import zhCnLocale from './zh-cn';
 
 const messages = {
-  'zh-cn': {
-    ...zhCnLocale
-  },
-  en: {
-    ...enLocale
-  }
+  'zh-cn': {...zhCnLocale},
+  en: {...enLocale}
 };
 
 /**

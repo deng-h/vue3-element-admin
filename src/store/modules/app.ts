@@ -1,21 +1,21 @@
 import { AppState } from './types';
 import { localStorage } from '@/utils/storage';
 import { defineStore } from 'pinia';
-import { getLanguage } from '@/lang';
 
 const useAppStore = defineStore({
   id: 'app',
+
   state: (): AppState => ({
     device: 'desktop',
+
+    // 控制侧边菜单栏显示/隐藏
     sidebar: {
-      opened: localStorage.get('sidebarStatus')
-        ? !!+localStorage.get('sidebarStatus')
-        : true,
+      opened: localStorage.get('sidebarStatus') ? !! + localStorage.get('sidebarStatus') : true,
       withoutAnimation: false,
     },
-    language: getLanguage(),
     size: localStorage.get('size') || 'default',
   }),
+
   actions: {
     toggleSidebar() {
       this.sidebar.opened = !this.sidebar.opened;
@@ -26,22 +26,22 @@ const useAppStore = defineStore({
         localStorage.set('sidebarStatus', 0);
       }
     },
+
     closeSideBar(withoutAnimation: any) {
       localStorage.set('sidebarStatus', 0);
       this.sidebar.opened = false;
       this.sidebar.withoutAnimation = withoutAnimation;
     },
+
     toggleDevice(device: string) {
       this.device = device;
     },
+
     setSize(size: string) {
       this.size = size;
       localStorage.set('size', size);
     },
-    setLanguage(language: string) {
-      this.language = language;
-      localStorage.set('language', language);
-    },
+
   },
 });
 

@@ -39,10 +39,7 @@ service.interceptors.response.use(
         return response;
       }
 
-      ElMessage({
-        message: msg || '系统出错',
-        type: 'error'
-      });
+      ElMessage({message: msg || '系统出错', type: 'error'});
       return Promise.reject(new Error(msg || 'Error'));
     }
   },
@@ -59,10 +56,7 @@ service.interceptors.response.use(
           window.location.href = '/';
         });
       } else {
-        ElMessage({
-          message: msg || '系统出错',
-          type: 'error'
-        });
+        ElMessage({message: msg || '系统出错', type: 'error'});
       }
     }
     return Promise.reject(error.message);
