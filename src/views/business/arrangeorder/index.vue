@@ -1,28 +1,18 @@
 <template>
   <div class="app-container">
     <div class="top-container">
-      <el-button style="margin-right: 10px;" type="success"  @click="addArrangeOrder" v-hasPerm="['arrangeOrder:add']">
-        添加排单
-      </el-button>
+      <el-button type="success" @click="addArrangeOrder" v-hasPerm="['arrangeOrder:add']">添加排单</el-button>
 
       <br><br>
-      <el-input v-model="inputSearch" placeholder="请输设备地址" style="width: 120px; margin-right: 10px;" />
-
-      <el-button v-hasPerm="['arrangeOrder:list']"  type="primary"   @click="clickFetchPageList">
-        查询
-      </el-button>
+      <el-input v-model="inputSearch" placeholder="请输入设备地址" style="width: 120px; margin-right: 10px;" />
+      <el-button type="primary" @click="fetchPageList" v-hasPerm="['arrangeOrder:list']">查询</el-button>
 
       <br><br>
       <el-select style="width: 150px;margin-right: 10px;"
-                 @change="unfinishedDevidChange"
-                 v-model="unfinishedDevid"
+                 @change="unfinishedDevIDChange"
+                 v-model="unfinishedDevID"
                  placeholder="查看订货总量">
-        <el-option
-          v-for="item in deviceList"
-          :key="item.devid"
-          :label="item.label"
-          :value="item.devid">
-        </el-option>
+        <el-option v-for="item in deviceList" :key="item.devid" :label="item.label" :value="item.devid"/>
       </el-select>
 
       未完成订单总订货量:
@@ -73,8 +63,9 @@
       />
     </el-card>
 
+<!--    添加、编辑dialog-->
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" @close="closeDialog">
-      <el-form ref="arrangeOrderRef" :model="arrangeOrder" :rules="validateRulesAdd" label-width="140px">
+      <el-form ref="arrangeOrderAddRef" :model="arrangeOrder" :rules="validateRulesAdd" label-width="140px">
         <el-form-item label="设备地址" prop="devid">
           <el-select
             v-model="arrangeOrder.devid"
@@ -129,7 +120,6 @@
       </template>
     </el-dialog>
   </div>
-
 </template>
 
 <script setup lang="ts">
@@ -138,12 +128,16 @@ import {ArrangeOrder, DevAddrQuery} from "@/api/business/types";
 
 const state = reactive({
   inputSearch: '',
-  tableDatalist: [{'devid': '1'}, {'devid': '2'}],
+  ids: [] as number[],  // 选中的ID
+  tableDatalist: [{'devid': '1', 'devname': 'devname', 'scheQuantity': '666', 'startDate': '2023-02-01 00:00:00', 'endDate': '2023-02-22 00:00:00'}],
   loading: false,
   total: 0,  // 总条数
+  unfinishedOrderQuantity: '',
+  currArrangeQualifiedQuantity: '',
   queryParams: {pageNum: 1, pageSize: 10} as DevAddrQuery,
   dialog: {title: '', visible: false} as DialogType,
   arrangeOrder: {} as ArrangeOrder,
+  unfinishedDevID: '',
   deviceList: [{devid: '1', label: '1 (mpp315)', devname: 'mpp315',},
               {devid: '2', label: '2 (mpp250)', devname: 'mpp250',},
               {devid: '3', label: '3 (mpp250)', devname: 'mpp250',},
@@ -151,8 +145,7 @@ const state = reactive({
               {devid: '5', label: '5 (pe63)', devname: 'pe63',},
               {devid: '6', label: '6 (gxpe63)', devname: 'gxpe63',},
               {devid: '7', label: '7 (gxpe63)', devname: 'gxpe63',},],
-  validateRulesAdd: {
-    //注意 ： prop绑定的变量名要和 v-model绑定的变量名一样
+  validateRulesAdd: { //注意 ： prop绑定的变量名要和 v-model绑定的变量名一样
     devid: [{ required: true, message: '请输入设备地址', trigger: 'blur' },],
     devname: [{ required: true, message: '请输入设备名称', trigger: 'blur' },],
     scheQuantity: [{ required: true, message: '请输入计划产量', trigger: 'blur' },],
@@ -163,38 +156,48 @@ const state = reactive({
 
 const {
   inputSearch,
+  ids,
   tableDatalist,
   loading,
+  unfinishedOrderQuantity,
+  currArrangeQualifiedQuantity,
   total,
   queryParams,
   dialog,
   arrangeOrder,
   deviceList,
-  validateRulesAdd
+  validateRulesAdd,
+  unfinishedDevID,
 } = toRefs(state);
 
 function addArrangeOrder(){
   dialog.value ={title: '添加排单', visible: true};
 }
 
-function handleUpdate(row: { [key: string]: any }){
+function handleUpdate(row: any) {
+  dialog.value = {title: '编辑', visible: true};
+  const row_id = row.devid || state.ids;
+  const selectedData = state.tableDatalist.find((item) => {
+    if(item.devid === row_id){
+      return item;
+    }
+  });
+  state.arrangeOrder.devid = row_id;
+  if(selectedData !== undefined){
+    state.arrangeOrder = selectedData;
+  }
 
 }
 
-function clickFetchPageList(){
+function unfinishedDevIDChange(){
+  console.log("未完成数量");
+}
+
+function fetchPageList(){
 
 }
 
-function handleDelete(row: { [key: string]: any }){
-
-}
-
-
-function unfinishedOrderQuantity(){
-
-}
-
-function currArrangeQualifiedQuantity(){
+function handleDelete(row: any){
 
 }
 
@@ -210,6 +213,10 @@ function closeDialog(){
 function handleSubmit(){
 
 }
+
+onMounted(() => {
+  handleQuery();
+});
 </script>
 
 <style scoped>
