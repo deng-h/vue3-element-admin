@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <div class="top-container">
-      <el-button style="margin-right: 20px;" type="success"  @click="addOrder" v-hasPerm="['order:add']">
+      <el-button style="margin-right: 10px;" :icon="Plus" type="success"  @click="addOrder" v-hasPerm="['order:add']">
         添加订单
       </el-button>
 
       <el-input v-model="inputSearch" placeholder="请输入订单编号或者规格/型号" style="width: 260px;margin-right: 20px;" />
-      <el-button v-hasPerm="['order:list']" type="primary" @click="clickFetchPageList">
+      <el-button v-hasPerm="['order:list']" :icon="Search" type="primary" @click="clickFetchPageList">
         查询
       </el-button>
       <el-checkbox style="margin-left: 20px;"  @change="checkChange" v-model="allNotFinished">仅显示未完成订单</el-checkbox>
@@ -176,6 +176,7 @@
 <script setup lang="ts">
 import {reactive, toRefs, onMounted} from "vue";
 import {Order} from "@/api/business/types";
+import {Plus, Search} from "@element-plus/icons-vue";
 
 const state = reactive({
   inputSearch: '',

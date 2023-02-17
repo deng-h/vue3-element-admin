@@ -2,13 +2,13 @@
   <div class="app-container">
     <div class="top-container">
       <el-input v-model="inputSearch" placeholder="请输入批次型号(规格/型号, 支长/根重, 壁厚)" style="width: 330px; margin-right: 10px;"/>
-      <el-button v-hasPerm="['stock:list']" type="primary" @click="fetchPageList">查询</el-button>
+      <el-button v-hasPerm="['stock:list']" type="primary" :icon="Search" @click="fetchPageList">查询</el-button>
       <el-button v-hasPerm="['stock:history']" type="success" @click="gotoHistoryPage" style="margin-left: 20px;">
         查看历史库存数据
       </el-button>
     </div>
 
-    <el-card style="margin-top: 10px">
+    <el-card style="margin-top: 10px;">
       <el-table :data="stockList" v-loading="loading" highlight-current-row border style="font-size: 10px;">
         <el-table-column fixed type="index" align="center" label="序号" width="80"/>
         <el-table-column fixed prop="totalModel" align="center" label="用户名" width="180"/>
@@ -26,7 +26,7 @@
       </el-table>
     </el-card>
 
-    <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" @close="closeDialog">
+    <el-dialog :title="dialog.title" v-model="dialog.visible" width="600px" @close="closeDialog">
       <el-form ref="stockRef" :model="stock" :rules="validateRules" label-width="140px">
         <el-form-item label="批次型号" prop="totalModel">
           <el-input placeholder="请准确填写批次型号(规格/型号、支长/根重、壁厚)" v-model="stock.totalModel"/>
@@ -51,6 +51,7 @@
 import router from '@/router';
 import {reactive, toRefs, onMounted} from "vue";
 import {Stock} from "@/api/business/types";
+import {Search} from "@element-plus/icons-vue";
 
 const state = reactive({
   loading: false,

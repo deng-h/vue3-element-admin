@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <div class="top-container">
-      <el-button type="success" @click="updateDeviceStatus" v-hasPerm="['deviceStatus:add']" style="margin-right: 20px;">
+      <el-button type="success" @click="updateDeviceStatus" v-hasPerm="['deviceStatus:add']" style="margin-right: 10px;">
         更新设备状态
       </el-button>
 
       <el-input v-model="inputSearch" placeholder="请输入设备地址" style="width: 260px; margin-right: 10px;" />
-      <el-button type="primary" @click="clickFetchPageList" v-hasPerm="['deviceStatus:list']">
+      <el-button type="primary" :icon="Search" @click="clickFetchPageList" v-hasPerm="['deviceStatus:list']">
         查询
       </el-button>
       <el-checkbox style="margin-left: 20px;" @change="checkChange" v-model="latestStatus" label="仅显示最新设备状态"></el-checkbox>
@@ -74,6 +74,7 @@
 <script setup lang="ts">
 import {reactive, toRefs, onMounted} from "vue";
 import {DevAddrQuery, DeviceStatus} from "@/api/business/types";
+import {Search} from "@element-plus/icons-vue";
 const state = reactive({
   inputSearch: '',
   latestStatus: true,

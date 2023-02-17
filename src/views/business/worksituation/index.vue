@@ -1,31 +1,31 @@
 <template>
   <div class="app-container">
     <div class="top-container">
-      <el-button style="margin-right: 10px;" type="success" @click="addWorkSituation" v-hasPerm="['worksituation:add']">
+      <el-button style="margin-right: 10px;" :icon="Plus" type="success" @click="addWorkSituation" v-hasPerm="['worksituation:add']">
         添加班组
       </el-button>
       <el-input v-model="inputSearch" placeholder="请输入订单编号" style="width: 260px; margin-right: 10px;" />
-      <el-button v-hasPerm="['worksituation:list']" type="primary" @click="fetchPageList">
+      <el-button v-hasPerm="['worksituation:list']" :icon="Search" type="primary" @click="fetchPageList">
         查询
       </el-button>
     </div>
     <el-card style="margin-top: 10px">
       <el-table :data="workSituationList" v-loading="loading" highlight-current-row border style="font-size: 10px;">
-        <el-table-column fixed prop="id" label="ID" width="80"/>
-        <el-table-column fixed prop="devid" label="设备地址" width="80"/>
-        <el-table-column prop="monitor" label="班组负责人" width="100"/>
-        <el-table-column prop="startTime" label="班次生产开始时间" width="180"/>
-        <el-table-column prop="endTime" label="班次生产结束时间" width="180"/>
-        <el-table-column prop="orderNum" label="订单编号" width="120"/>
-        <el-table-column prop="orderStartTime" label="班次生产该订单开始时间" width="180"/>
-        <el-table-column prop="orderEndTime" label="班次生产该订单结束时间" width="180"/>
-        <el-table-column prop="unqualifiedQuantity" label="废品数(千克)" width="120"/>
-        <el-table-column prop="shiftProQuantity" label="班次实际生产数(米)" width="150"/>
-        <el-table-column prop="qualifiedQuantity" label="合格数(米)" width="120"/>
-        <el-table-column prop="shiftOutput" label="班次产量(吨)" width="120"/>
-        <el-table-column prop="enConsumption" label="能耗(千瓦时)" width="120"/>
-        <el-table-column prop="gmtCreate" label="创建时间" width="180"/>
-        <el-table-column prop="gmtModified" label="更新时间" width="180"/>
+        <el-table-column fixed prop="id" align="center" label="ID" width="80"/>
+        <el-table-column fixed prop="devid" align="center" label="设备地址" width="80"/>
+        <el-table-column prop="monitor" align="center" label="班组负责人" width="100"/>
+        <el-table-column prop="startTime" align="center" label="班次生产开始时间" width="180"/>
+        <el-table-column prop="endTime" align="center" label="班次生产结束时间" width="180"/>
+        <el-table-column prop="orderNum" align="center" label="订单编号" width="120"/>
+        <el-table-column prop="orderStartTime" align="center" label="班次生产该订单开始时间" width="180"/>
+        <el-table-column prop="orderEndTime" align="center" label="班次生产该订单结束时间" width="180"/>
+        <el-table-column prop="unqualifiedQuantity" align="center" label="废品数(千克)" width="120"/>
+        <el-table-column prop="shiftProQuantity" align="center" label="班次实际生产数(米)" width="150"/>
+        <el-table-column prop="qualifiedQuantity" align="center" label="合格数(米)" width="120"/>
+        <el-table-column prop="shiftOutput" align="center" label="班次产量(吨)" width="120"/>
+        <el-table-column prop="enConsumption" align="center" label="能耗(千瓦时)" width="120"/>
+        <el-table-column prop="gmtCreate" align="center" label="创建时间" width="180"/>
+        <el-table-column prop="gmtModified" align="center" label="更新时间" width="180"/>
 
         <el-table-column v-hasPerm="['worksituation:delete', 'worksituation:edit']" fixed="right" label="操作" width="200">
           <template #default="scope">
@@ -155,11 +155,13 @@
 <script setup lang="ts">
 import {reactive, toRefs, onMounted} from "vue";
 import {WorkSituation} from "@/api/business/types";
+import {Plus, Search} from "@element-plus/icons-vue";
 
 const state = reactive({
   loading: false,
   workSituationList: [{'devid': '1'}] as WorkSituation[],
   dialog: {title: '', visible: false} as DialogType,
+  ids: [] as number[],  // 选中的ID
   workSituation: {} as WorkSituation,
   nowDateStr: '',
   shiftTime: {start: "", end:"",},
@@ -195,6 +197,7 @@ const {
   loading,
   dialog,
   nowDateStr,
+  ids,
   oneLength,
   oneWeight,
   orderNumList,
@@ -204,8 +207,20 @@ const {
   shiftTime,
   validateRules,
 } = toRefs(state);
-function handleUpdate(row: any) {
 
+function handleUpdate(row: any) {
+  dialog.value ={title: '编辑班组', visible: true};
+  const row_id = row.devid || state.ids;
+  const selectedData = state.workSituationList.find((item) => {
+    if(item.devid === row_id){
+      return item;
+    }
+  });
+
+  state.workSituation.devid = row_id;
+  if(selectedData !== undefined){
+    state.workSituation = selectedData;
+  }
 }
 
 function handleDelete(row: any){

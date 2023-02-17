@@ -8,7 +8,7 @@
         <el-form-item>
           <el-button type="primary" :icon="Search" @click="handleQuery">查询</el-button>
           <el-button :icon="Refresh" @click="resetQuery">清空</el-button>
-          <el-button type="success" :icon="Plus"  @click="handleAdd">添加</el-button>
+          <el-button type="success" :icon="Plus" @click="handleAdd">添加</el-button>
         </el-form-item>
       </el-form>
     </div>

@@ -1,11 +1,12 @@
 <template>
   <div class="app-container">
     <div class="top-container">
-      <el-button type="success" @click="addArrangeOrder" v-hasPerm="['arrangeOrder:add']">添加排单</el-button>
+      <el-button type="success" @click="addArrangeOrder" :icon="Plus" v-hasPerm="['arrangeOrder:add']" style="margin-right: 10px">
+        添加排单
+      </el-button>
 
-      <br><br>
       <el-input v-model="inputSearch" placeholder="请输入设备地址" style="width: 120px; margin-right: 10px;" />
-      <el-button type="primary" @click="fetchPageList" v-hasPerm="['arrangeOrder:list']">查询</el-button>
+      <el-button type="primary" @click="fetchPageList" :icon="Search" v-hasPerm="['arrangeOrder:list']">查询</el-button>
 
       <br><br>
       <el-select style="width: 150px;margin-right: 10px;"
@@ -24,8 +25,8 @@
 
     <el-card style="margin-top: 10px">
       <el-table :data="tableDatalist" v-loading="loading" highlight-current-row border style="font-size: 10px;">
-        <el-table-column fixed type="index" label="序号" width="100"/>
-        <el-table-column fixed prop="devid" label="设备地址" width="100"/>
+        <el-table-column fixed type="index" align="center" label="序号" width="100"/>
+        <el-table-column fixed prop="devid" align="center" label="设备地址" width="100"/>
         <el-table-column prop="devname" label="设备名称" width="100"/>
         <el-table-column prop="scheQuantity" align="center" label="计划数" width="100"/>
         <el-table-column prop="startDate" align="center" label="排单起始时间" width="180"/>
@@ -44,8 +45,7 @@
               icon-color="red"
               width="180"
               title="此操作将永久删除该记录, 是否继续?"
-              @confirm="handleDelete(scope.row)"
-            >
+              @confirm="handleDelete(scope.row)">
               <template #reference>
                 <el-button type="danger" link v-hasPerm="['arrangeOrder:delete']" >删除</el-button>
               </template>
@@ -125,6 +125,7 @@
 <script setup lang="ts">
 import {reactive, toRefs, onMounted} from "vue";
 import {ArrangeOrder, DevAddrQuery} from "@/api/business/types";
+import {Plus, Search} from "@element-plus/icons-vue";
 
 const state = reactive({
   inputSearch: '',
