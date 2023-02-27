@@ -113,7 +113,7 @@ function handleQuery(){
   listCameraStatePages(state.queryParams).then(({data}) => {
     state.UavCameraStateList = data.list;
     state.total = data.total;
-    state.loading = false;
+    loading.value = false;
   })
 }
 

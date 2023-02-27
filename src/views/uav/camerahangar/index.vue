@@ -3,7 +3,7 @@
     <div class="search">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
         <el-form-item prop="keywords">
-          <el-input v-model="queryParams.keywords" placeholder="机库分组名" @keyup.enter="handleQuery"/>
+          <el-input v-model="queryParams.keywords" placeholder="机库分组名" clearable @keyup.enter="handleQuery"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :icon="Search" @click="handleQuery">查询</el-button>
@@ -16,9 +16,9 @@
     <el-card>
       <el-table :data="UavCameraHangarList" v-loading="loading" highlight-current-row border>
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column prop="hangarCategory" label="分组名称" width="100" />
-        <el-table-column prop="gmtCreate" label="创建时间" width="300" />
-        <el-table-column prop="gmtModified" label="更新时间" width="300" />
+        <el-table-column prop="hangarCategory" align="center" label="分组名称" width="100" />
+        <el-table-column prop="gmtCreate" align="center" label="创建时间" width="300" />
+        <el-table-column prop="gmtModified" align="center" label="更新时间" width="300" />
         <el-table-column label="操作" align="left">
           <template #default="scope">
             <el-button type="primary" link @click.stop="handleUpdate(scope.row)">修改</el-button>
@@ -41,7 +41,7 @@
       <el-form ref="dataFormRef" :model="cameraHangar" :rules="rules" label-width="100px">
         <!-- el-form-item中的prop属性和输入框绑定的属性名必须一致，否则无法输入 -->
         <el-form-item label="分组名称" prop="hangarCategory">
-          <el-input v-model="cameraHangar.hangarCategory"/>
+          <el-input v-model="cameraHangar.hangarCategory" @keyup.enter="handleSubmit"/>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -83,7 +83,6 @@ const state = reactive({
 
 const {
   loading,
-  ids,
   total,
   UavCameraHangarList,
   queryParams,
@@ -98,7 +97,7 @@ function handleQuery() {
   listCameraHangarPages(state.queryParams).then(({data}) => {
     state.UavCameraHangarList = data.list;
     state.total = data.total;
-    state.loading = false;
+    loading.value = false;
   });
 }
 
@@ -144,6 +143,8 @@ function handleAdd(){
 function closeDialog(){
   dialog.value.visible = false;
   loading.value = false;
+  dataFormRef.value.resetFields();
+  dataFormRef.value.clearValidate();
 }
 
 function handleSubmit(){

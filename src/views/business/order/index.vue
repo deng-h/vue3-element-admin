@@ -230,6 +230,10 @@ function clickFetchPageList(){
 
 }
 
+function checkChange(){
+
+}
+
 function addOrder(){
   dialog.value ={title: '添加订单', visible: true};
 }
@@ -239,6 +243,10 @@ function closeDialog(){
   loading.value = false;
 }
 
+function totalModelStocksSearch(){
+
+}
+
 function checkLenAndWeight(rule: any, value: any, callback: any){
 
 }
@@ -246,6 +254,10 @@ function checkThickness(rule: any, value: any, callback: any){
 
 }
 function checkUseStocks(rule: any, value: any, callback: any){
+
+}
+
+function handleSubmit(){
 
 }
 </script>

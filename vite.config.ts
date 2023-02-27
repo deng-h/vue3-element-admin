@@ -31,11 +31,10 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       open: true, // 运行自动打开浏览器,
       proxy: {
         [env.VITE_APP_BASE_API]: {
-          // 线上API地址
-          // target: 'http://vapi.youlai.tech',  // 有来商城线上接口地址
           // 本地API地址
           target: 'http://localhost:8181/',
           changeOrigin: true,
+          // 匹配以[env.VITE_APP_BASE_API]开头的路径，重写为空字符串
           rewrite: (path) => path.replace(new RegExp('^' + env.VITE_APP_BASE_API), '')
         },
       }

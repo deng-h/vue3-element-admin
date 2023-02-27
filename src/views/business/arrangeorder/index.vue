@@ -124,7 +124,7 @@
 
 <script setup lang="ts">
 import {reactive, toRefs, onMounted} from "vue";
-import {ArrangeOrder, DevAddrQuery} from "@/api/business/types";
+import {ArrangeOrder, DevAddrQuery} from "@/api/business/arrangeorder/types";
 import {Plus, Search} from "@element-plus/icons-vue";
 
 const state = reactive({
@@ -157,7 +157,6 @@ const state = reactive({
 
 const {
   inputSearch,
-  ids,
   tableDatalist,
   loading,
   unfinishedOrderQuantity,

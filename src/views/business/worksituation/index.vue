@@ -159,6 +159,7 @@ import {Plus, Search} from "@element-plus/icons-vue";
 
 const state = reactive({
   loading: false,
+  inputSearch: '',
   workSituationList: [{'devid': '1'}] as WorkSituation[],
   dialog: {title: '', visible: false} as DialogType,
   ids: [] as number[],  // 选中的ID
@@ -195,6 +196,7 @@ const state = reactive({
 const {
   workSituationList,
   loading,
+  inputSearch,
   dialog,
   nowDateStr,
   ids,

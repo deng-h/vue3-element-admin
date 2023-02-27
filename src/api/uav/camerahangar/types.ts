@@ -1,7 +1,3 @@
-/*
- * 分页列表项
- */
-
 export interface UavCameraHangar{
   id: string;
   hangarCategory: string;

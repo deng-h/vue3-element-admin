@@ -1,25 +1,38 @@
 <template>
   <div class="app-container">
-    <div class="top-container">
-      <el-button style="margin-right: 10px;" type="success" @click="addPlan" :icon="Plus" v-hasPerm="['arrangeOrder:add']">
-        添加计划
-      </el-button>
-      <el-input v-model="inputSearch" placeholder="请输设备地址" style="width: 120px; margin-right: 10px;" />
-      <el-button v-hasPerm="['midprodplansetting:list']" type="primary" :icon="Search" @click="fetchPageList">
-        查询
-      </el-button>
+    <div class="search">
+      <el-form ref="queryFormRef" :model="queryParams" :inline="true">
+        <el-form-item>
+          <el-button type="success" @click="addPlan" :icon="Plus" v-hasPerm="['arrangeOrder:add']">
+            添加计划
+          </el-button>
+        </el-form-item>
+
+        <el-form-item prop="deviceAddr" style="margin-right: 5px">
+          <el-input v-model="queryParams.deviceAddr" placeholder="请输设备地址" clearable @keyup.enter="handleQuery" style="width: 120px; margin-right: 10px;" />
+        </el-form-item>
+
+        <el-form-item>
+          <el-button v-hasPerm="['midprodplansetting:list']" type="primary" :icon="Search" @click="handleQuery">
+            查询
+          </el-button>
+          <el-button v-hasPerm="['midprodplansetting:list']" :icon="Refresh" @click="resetQuery">
+            重置查询
+          </el-button>
+        </el-form-item>
+      </el-form>
     </div>
 
     <el-card style="margin-top: 10px">
       <el-table :data="tableDatalist" v-loading="loading" highlight-current-row border style="font-size: 10px;">
-        <el-table-column fixed type="index" align="center" label="序号" width="120"/>
-        <el-table-column prop="deviceId" align="center" label="设备地址" width="120"/>
-        <el-table-column prop="model" align="center" label="具体型号" width="120"/>
-        <el-table-column prop="name" align="center" label="型号名称" width="120"/>
-        <el-table-column prop="cname" align="center" label="所属分组" width="120"/>
-        <el-table-column prop="scheQuantity" align="center" label="计划数" width="120"/>
-        <el-table-column prop="startTime" align="center" label="起始时间"/>
-        <el-table-column prop="endTime" align="center" label="结束时间"/>
+        <el-table-column fixed type="index" align="center" label="序号" width="100"/>
+        <el-table-column prop="deviceId" align="center" label="设备地址" width="200"/>
+        <el-table-column prop="model" align="center" label="具体型号" width="200"/>
+        <el-table-column prop="name" align="center" label="型号名称" width="250"/>
+        <el-table-column prop="cname" align="center" label="所属分组" width="200"/>
+        <el-table-column prop="scheQuantity" align="center" label="计划数" width="200"/>
+        <el-table-column prop="startTime" align="center" label="起始时间" />
+        <el-table-column prop="endTime" align="center" label="结束时间" />
         <el-table-column prop="gmtCreate" align="center" label="创建时间" />
         <el-table-column prop="gmtModified" align="center" label="更新时间" />
         <el-table-column v-hasPerm="['midprodplansetting:edit', 'midprodplansetting:delete']" fixed="right" label="操作" width="150">
@@ -41,30 +54,32 @@
           </template>
         </el-table-column>
       </el-table>
+      <pagination
+        v-if="total > 0"
+        :total="total"
+        v-model:page="queryParams.pageNum"
+        v-model:limit="queryParams.pageSize"
+        @pagination="handleQuery"
+      />
     </el-card>
 
-    <el-dialog :title="dialog.title" v-model="dialog.visible" width="600px" @close="closeDialog">
-      <el-form ref="planRef" :model="plan" :rules="validateRules" label-width="140px">
+    <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" @close="closeDialog">
+      <el-form ref="dataFormRef" :model="plan" :rules="validateRules" label-width="140px">
         <el-form-item label="设备地址" prop="deviceId">
           <el-select
             v-model="plan.deviceId"
             filterable
             style="margin-bottom: 5px;"
             placeholder="请选择设备地址">
-            <el-option
-              v-for="item in deviceList"
-              :key="item.devid"
-              :label="item.devid"
-              :value="item.devid"/>
+            <el-option v-for="item in deviceList" :key="item.devid" :label="item.devid" :value="item.devid"/>
           </el-select>
         </el-form-item>
 
-        <el-form-item label="型号" prop="totalModel">
+        <el-form-item label="型号" prop="model">
           <el-input
-            :disabled="modelInputDisabled"
             placeholder="请准确填写型号"
-            @change="totalModelCheckSearch"
-            v-model="totalModel"
+            @change="modelCheckSearch"
+            v-model="plan.model"
           />
         </el-form-item>
 
@@ -107,15 +122,29 @@
 </template>
 
 <script setup lang="ts">
-import {reactive, toRefs, onMounted} from "vue";
-import {Plus, Search} from "@element-plus/icons-vue";
-import {Plan} from "@/api/midproduct/types";
+import {reactive, toRefs, onMounted, ref} from "vue";
+import {Plus, Refresh, Search} from "@element-plus/icons-vue";
+import {Plan} from "@/api/midproduct/plansetting/types"
+import {ElForm} from "element-plus";
+import {MidProdPlanQuery} from "@/api/midproduct/plansetting/types";
+import {
+  listMidProdPlanPages,
+} from "@/api/midproduct/plansetting";
+import {
+  getModelAndCategoryNameByModel
+} from "@/api/midproduct/model";
 
+
+const dataFormRef = ref(ElForm);
+const queryFormRef = ref(ElForm);
 const state = reactive({
   loading: false,
   ids: [] as number[],  // 选中的ID
-  tableDatalist: [{'id': '1','deviceId':'1'}] as Plan[],
+  tableDatalist: [] as Plan[],
+  modelCheckContent: '',
+  total: 0,  // 总条数
   plan: {} as Plan,
+  queryParams: {pageNum: 1, pageSize: 10} as MidProdPlanQuery,
   dialog: {title: '', visible: false} as DialogType,
   deviceList: [{devid: '1'},{devid: '2'},{devid: '3'},{devid: '4'},{devid: '5'},{devid: '6'},{devid: '7'},{devid: '8'},
     {devid: '9'},{devid: '10'},{devid: '11'},{devid: '12'},{devid: '13'},{devid: '14'},{devid: '15'},{devid: '16'}],
@@ -127,10 +156,12 @@ const state = reactive({
 
 const {
   loading,
-  ids,
   plan,
+  total,
+  modelCheckContent,
   tableDatalist,
   dialog,
+  queryParams,
   deviceList,
   validateRules
 } = toRefs(state);
@@ -157,8 +188,44 @@ function handleUpdate(row: any){
     state.plan = selectedData;
   }
 }
-onMounted(() => {
 
+function handleQuery(){
+  loading.value = true;
+  listMidProdPlanPages(state.queryParams).then(({data}) => {
+    state.tableDatalist = data.list;
+    state.total = data.total;
+    loading.value = false;
+  });
+}
+
+function handleSubmit(){
+
+}
+
+//与设备技术相关的通过型号搜索
+function modelCheckSearch(){
+  if(state.plan.model !== ''){
+    getModelAndCategoryNameByModel(state.plan.model).then(({data}) => {
+      modelCheckContent.value = "型号名称：" + data.name + "，型号分类："+ data.categoryName;
+    }).catch(() => {
+      modelCheckContent.value = "未查到相关型号，请确认型号!";
+    });
+  }
+}
+
+// 重置查询
+function resetQuery() {
+  queryFormRef.value.resetFields();
+  handleQuery();
+}
+
+function handleDelete(row: any){
+
+}
+
+
+onMounted(() => {
+  handleQuery();
 });
 </script>
 

@@ -29,9 +29,24 @@
 <script setup lang="ts">
 import router from '@/router';
 import {Search} from "@element-plus/icons-vue";
+import {reactive, toRefs} from "vue";
+
+const state = reactive({
+  loading: false,
+  inputSearch: '',
+});
+
+const {
+  loading,
+  inputSearch
+} = toRefs(state);
 
 function gotoCurrentPage(){
   router.push("/midproduct/initprodstorage");
+}
+
+function fetchPageList(){
+
 }
 </script>
 

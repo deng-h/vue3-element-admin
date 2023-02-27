@@ -75,6 +75,7 @@
 import {reactive, toRefs, onMounted} from "vue";
 import {DevAddrQuery, DeviceStatus} from "@/api/business/types";
 import {Search} from "@element-plus/icons-vue";
+
 const state = reactive({
   inputSearch: '',
   latestStatus: true,

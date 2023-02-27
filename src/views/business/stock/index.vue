@@ -100,9 +100,6 @@ function handleUpdate(row: any){
   }
 }
 
-function onCancel(){
-
-}
 
 function closeDialog(){
   dialog.value.visible = false;
@@ -112,6 +109,10 @@ function closeDialog(){
 function handleSubmit(){
 
 }
+
+onMounted(() => {
+
+});
 </script>
 
 <style scoped>

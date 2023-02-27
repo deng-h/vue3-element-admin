@@ -234,6 +234,18 @@ function closeDialog(){
   dialog.value.visible = false;
   loading.value = false;
 }
+
+function handleSubmit(){
+
+}
+
+function handleDelete(row: any){
+
+}
+
+function fetchPageList(){
+
+}
 </script>
 
 <style scoped>

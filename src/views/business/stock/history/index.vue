@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="top-container">
       <el-input v-model="inputSearch" placeholder="请输入批次型号(规格/型号, 支长/根重, 壁厚)" style="width: 330px; margin-right: 10px;" />
-      <el-button v-hasPerm="['stock:history']" type="primary" @click="clickFetchPageList">
+      <el-button v-hasPerm="['stock:history']" type="primary" @click="fetchPageList">
         查询
       </el-button>
       <el-button v-hasPerm="['stock:history']" style="margin-left: 20px;" type="success" @click="gotoNowPage">
@@ -38,6 +38,7 @@ import {DevAddrQuery, Stock} from "@/api/business/types";
 const state = reactive({
   loading: false,
   total: 0,  // 总条数
+  inputSearch: '',
   queryParams: {pageNum: 1, pageSize: 10} as DevAddrQuery,
   stockList: [{'id': '1', 'adminName': 'joy'}] as Stock[],
 });
@@ -45,6 +46,7 @@ const state = reactive({
 const {
   loading,
   total,
+  inputSearch,
   queryParams,
   stockList
 
@@ -58,8 +60,12 @@ function handleQuery(){
 
 }
 
+function fetchPageList(){
+
+}
+
 onMounted(() => {
-  handleQuery
+  handleQuery();
 })
 </script>
 
